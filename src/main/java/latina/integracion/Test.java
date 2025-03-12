@@ -8,9 +8,9 @@ import java.sql.SQLException;
 
 public class Test {
     Connection con;
-    String host = "jdbc:mysql://localhost:3306/sakila";
+    String host = "jdbc:mysql://localhost:3306/bdlatina";
     String user = "root";
-    String pswd = "localhost";
+    String pswd = "root";
 
     public Test() {
         try {

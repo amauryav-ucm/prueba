@@ -9,7 +9,7 @@ public class EMFContainerImp extends EMFContainer {
     private EntityManagerFactory emf;
 
     public EMFContainerImp() {
-        emf = Persistence.createEntityManagerFactory("latina");
+        emf = Persistence.createEntityManagerFactory("LaTinaCode");
     }
 
     @Override
