@@ -40,27 +40,7 @@ public class VistaPrincipal extends Application {
 
         root1.getChildren().add(webView1);
 
-        WebView webView = new WebView();
-        WebEngine webEngine = webView.getEngine();
-
-        // Load an HTML file from the local filesystem
-        File htmlFile = new File("src/main/resources/latina/test.html");
-        System.out.println(htmlFile.toURI().toString());
-        webEngine.load(htmlFile.toURI().toString());
-
-        webEngine.setJavaScriptEnabled(true);
-        webEngine.getLoadWorker().stateProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue == javafx.concurrent.Worker.State.SUCCEEDED) {
-                // Get the JavaScript window object and bind Java method to it
-                JSObject window = (JSObject) webEngine.executeScript("window");
-                window.setMember("java", this); // Bind this Java object to the JavaScript window object
-            }
-        });
-
-        StackPane root = new StackPane();
-        root.getChildren().add(webView1);
-
-        Scene scene = new Scene(root, 800, 600);
+        Scene scene = new Scene(root1, 800, 600);
         primaryStage.setTitle("JavaFX WebView Example");
         primaryStage.setScene(scene);
         primaryStage.show();
