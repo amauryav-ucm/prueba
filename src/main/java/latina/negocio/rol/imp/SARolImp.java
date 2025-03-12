@@ -12,7 +12,6 @@ public class SARolImp implements SARol {
 
     @Override
     public int altaRol(TRol rol) {
-        System.out.println("123");
         EntityManager em = null;
         em = EMFContainer.getInstance().getEMF().createEntityManager();
         em.getTransaction().begin();        

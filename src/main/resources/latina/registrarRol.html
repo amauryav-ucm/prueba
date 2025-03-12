@@ -208,8 +208,8 @@
 
     function mostrarMensaje(mensaje) {
         const popup = document.getElementById("popup");
-        document.getElementById("popup-message").innerText = mensaje;
         popup.style.display = "flex";
+        document.getElementById("popup-message").innerText = mensaje;
         setTimeout(() => popup.classList.add("show"), 10);
     }
 
