@@ -56,12 +56,22 @@ public class VistaPrincipal extends Application {
             System.out.println(rol.toString());
             int res = SAFactory.getInstance().createSARol().altaRol(rol);
             System.out.println(res);
-            cambiarVista();
+            if(res >= 0) {
+                cambiarVista(true, "Registrado correctamente con id " + res);
+            }
+            else if(res == -1) {
+                cambiarVista(true, "Ya existe un rol con el nombre introducido");
+            }
+            else if(res == -2) {
+                cambiarVista(true, "El salario debe ser positivo");
+            }
         } catch (Exception e) {e.printStackTrace();}
     }
 
-    public void cambiarVista(){
+    public void cambiarVista(boolean popup, String mensaje){
+        String mensajeURL = mensaje.replace(" ","%20");
         File htmlFile = new File("src/main/resources/latina/vista/test.html");
-        webEngine.load(htmlFile.toURI().toString() + "?popup=true&mensaje=pruebaaaaaaaaaa");
+        System.out.println(htmlFile.toURI().toString() + String.format("?popup=%s&mensaje=%s", popup?"true":"false", "hola"));
+        webEngine.load(htmlFile.toURI().toString() + String.format("?popup=%s&mensaje=%s", popup?"true":"false", mensajeURL));
     }
 }
