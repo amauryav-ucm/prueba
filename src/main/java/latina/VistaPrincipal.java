@@ -116,6 +116,35 @@ public class VistaPrincipal extends Application {
         primaryStage.setScene(scene2);
     }
 
+    public void changeSceneToMain()
+    {
+        StackPane root3 = new StackPane();
+        WebView webView3 = new WebView();
+        WebEngine webEngine3 = webView3.getEngine();
+
+        // Cargar el archivo HTML para la ventana principal (con el botón)
+        File htmlFile3 = new File("src/main/resources/latina/VentanaPrincipal.html");
+        webEngine3.load(htmlFile3.toURI().toString());
+
+        webEngine3.setJavaScriptEnabled(true);
+        webEngine3.getLoadWorker().stateProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue == javafx.concurrent.Worker.State.SUCCEEDED) {
+                JSObject window = (JSObject) webEngine3.executeScript("window");
+                window.setMember("java", this); // Vincular el objeto Java a la ventana de JavaScript
+            }
+        });
+
+        root3.getChildren().add(webView3);
+
+        Scene scene3 = new Scene(root3, 800, 600);  // Primera escena con el botón
+
+        // Cambiar a la primera escena
+        primaryStage.setScene(scene3);
+
+    }
+
+
+
 
     public static void main(String[] args) {
         launch(args);
