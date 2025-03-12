@@ -59,18 +59,23 @@ public class VistaPrincipal extends Application {
     public void sendFormData(JSObject datos) {
         try {
             // Mostrar los datos recibidos en la consola
+            // TODO
+            // Esto tambien deberia ser generico, es la parte de datos del contexto
             System.out.println("Datos recibidos: " + datos.getMember("nombre") + " " + datos.getMember("salario"));
 
             // Crear un nuevo objeto TRol con los datos del formulario
             TRol t = new TRol(datos.getMember("nombre").toString(),
                     Double.parseDouble(datos.getMember("salario").toString()));
 
-            // Registrar el rol (puedes modificar esta parte según tu lógica de negocio)
+            // TODO
+            // Esto no deberia estar aqui, deberia llamar a uan comando o controller o algo
             SARol sa = new SARolImp();
             int result = sa.altaRol(t);
 
             String mensaje;
 
+            // TODO
+            // Igual esta comprobacion se deberia mover a otro lado
             if(result >= 0) mensaje = "Se ha registrado el rol correctamente con ID: " + result;
             else if (result == -1) mensaje = "Ya existe un rol con el nombre introducido";
             else if(result == -2) mensaje = "El salario debe ser un número positivo";
@@ -78,6 +83,8 @@ public class VistaPrincipal extends Application {
                 mensaje = "";
             }
 
+            // TODO
+            // Esto tambien deberia convertirse en un update generico de alguna forma
             WebEngine webEngine = webView.getEngine();
             String finalMensaje = mensaje;
             webEngine.documentProperty().addListener((obs, oldDoc, newDoc) -> {
@@ -90,7 +97,8 @@ public class VistaPrincipal extends Application {
         }
     }
 
-    // Método que es llamado desde JavaScript para cambiar a la segunda escena
+    // TODO
+    // Esta deberia convertirse en una funcion generica que seleccione el HTML basado en un evento
     public void changeSceneToForm() {
         // Cambiar a la segunda escena con el formulario
         WebEngine webEngine = webView.getEngine();
