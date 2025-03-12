@@ -1,136 +1,152 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Pretty Form</title>
-        <style>
-            * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Arial', sans-serif;
-}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pretty Form</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
 
-body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: #f2f2f2;
-    background-image: linear-gradient(to right, #5c6bc0, #42a5f5); /* Changed to blue gradient */
-}
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f2f2f2;
+            background-image: linear-gradient(to right, #5c6bc0, #42a5f5);
+        }
 
-form {
-    background: rgba(255, 255, 255, 0.9);
-    padding: 30px;
-    border-radius: 10px;
-    width: 400px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    animation: fadeIn 1s ease-out;
-}
+        form {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 10px;
+            width: 400px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 1s ease-out;
+        }
 
-h2 {
-    text-align: center;
-    color: #333;
-    margin-bottom: 20px;
-    font-size: 24px;
-    font-weight: bold;
-    animation: slideIn 1.5s ease-out;
-}
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 24px;
+            font-weight: bold;
+            animation: slideIn 1.5s ease-out;
+        }
 
-label {
-    font-size: 16px;
-    margin-bottom: 8px;
-    color: #555;
-    display: block;
-    transition: color 0.3s ease;
-}
+        label {
+            font-size: 16px;
+            margin-bottom: 8px;
+            color: #555;
+            display: block;
+            transition: color 0.3s ease;
+        }
 
-input {
-    width: 100%;
-    padding: 12px;
-    margin-bottom: 20px;
-    border: 2px solid #ddd;
-    border-radius: 5px;
-    font-size: 16px;
-    outline: none;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
+        input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
 
-input:focus {
-    border-color: #42a5f5; /* Blue focus border */
-    box-shadow: 0 0 8px rgba(66, 165, 245, 0.6); /* Blue shadow */
-}
+        input:focus {
+            border-color: #42a5f5;
+            box-shadow: 0 0 8px rgba(66, 165, 245, 0.6);
+        }
 
-button {
-    width: 100%;
-    padding: 12px;
-    background-color: #42a5f5; /* Blue button background */
-    color: white;
-    font-size: 18px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-}
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
 
-button:hover {
-    background-color: #5c6bc0; /* Darker blue on hover */
-    transform: scale(1.05);
-}
+        button {
+            width: 48%;
+            padding: 12px;
+            background-color: #42a5f5;
+            color: white;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
 
-button:active {
-    background-color: #42a5f5; /* Blue button on click */
-    transform: scale(1);
-}
+        button:hover {
+            background-color: #5c6bc0;
+            transform: scale(1.05);
+        }
 
-/* Animations */
-@keyframes fadeIn {
-    0% {
-        opacity: 0;
-        transform: translateY(-20px);
-    }
-    100% {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
+        button:active {
+            background-color: #42a5f5;
+            transform: scale(1);
+        }
 
-@keyframes slideIn {
-    0% {
-        transform: translateX(-100%);
-    }
-    100% {
-        transform: translateX(0);
-    }
-}
-        </style>
-    </head>
-<body>
-    <div class="form-container">
-        <form>
-            <label for="name">Nombre</label>
-            <input type="text" id="name" name="name" required>
-            
-            <label for="wage">Salario</label>
-            <input type="number" id="wage" name="wage" required>
-            
-            <button type="submit" onclick="recogerDatos()">Registrar</button>
-        </form>
-        <script>
-            function recogerDatos() {
-                var nombre = document.getElementById("name").value;
-                var salario = document.getElementById("wage").value;
-                enviarAJava(nombre, salario);
+        /* Animations */
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(-20px);
             }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
-            function enviarAJava(nombre, salario){
-                if (window.java && window.java.sendFormData) {
+        @keyframes slideIn {
+            0% {
+                transform: translateX(-100%);
+            }
+            100% {
+                transform: translateX(0);
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="form-container">
+    <form>
+        <label for="name">Nombre</label>
+        <input type="text" id="name" name="name" required>
+
+        <label for="wage">Salario</label>
+        <input type="number" id="wage" name="wage" required>
+
+        <div class="button-container">
+            <button type="button" onclick="volverAlaVentanaPrincipal()">Volver a la Ventana Principal</button>
+            <button type="submit" onclick="recogerDatos()">Registrar</button>
+        </div>
+    </form>
+
+    <script>
+        function recogerDatos() {
+            var nombre = document.getElementById("name").value;
+            var salario = document.getElementById("wage").value;
+            enviarAJava(nombre, salario);
+        }
+
+        function enviarAJava(nombre, salario){
+            if (window.java && window.java.sendFormData) {
                 window.java.sendFormData(nombre, salario);
             }
+        }
+
+        function volverAlaVentanaPrincipal() {
+            if (window.java && window.java.changeSceneToMain) {
+                window.java.changeSceneToMain(); // Llamar a la función en Java para cambiar de escena
             }
-        </script>
-    </div>
+        }
+    </script>
+</div>
 </body>
 </html>
