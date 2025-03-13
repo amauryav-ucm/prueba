@@ -1,0 +1,3 @@
+# Para que no se suban las carpetas de compilacion
+target/
+out/
