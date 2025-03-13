@@ -19,6 +19,7 @@ public class SARolImp implements SARol {
         List<Object> l = em.createNamedQuery("Rol.findBynombre").setParameter("nombre", rol.getNombre()).getResultList();
         if(!l.isEmpty()) return -1;
         if(rol.getSalario()<=0) return -2;
+        if(!rol.getNombre().matches("^[a-z\\s]+$")) return -3;
         Rol mirol = new Rol(rol);
         em.persist(mirol);
         em.getTransaction().commit();
