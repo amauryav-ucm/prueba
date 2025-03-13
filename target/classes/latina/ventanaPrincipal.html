@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>COSITAS</title>
+    <title>Restaurante LaTina - Inicio</title>
     <style>
         * {
             margin: 0;
@@ -17,55 +17,71 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: #f2f2f2;
-            background-image: linear-gradient(to right, #5c6bc0, #42a5f5);
+            background: linear-gradient(to right, #5c6bc0, #42a5f5);
         }
 
         .container {
-            text-align: center;
             background: rgba(255, 255, 255, 0.9);
             padding: 50px;
-            border-radius: 10px;
-            width: 350px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            animation: fadeIn 1s ease-out;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            width: 400px;
+            animation: fadeIn 0.8s ease-in-out;
         }
 
-        h2 {
-            color: #333;
-            margin-bottom: 20px;
-            font-size: 24px;
+        h1 {
+            font-size: 32px;
             font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
+        .button-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
         }
 
         button {
             width: 100%;
-            padding: 15px;
-            background-color: #42a5f5;
+            padding: 14px;
+            font-size: 18px;
+            font-weight: bold;
             color: white;
-            font-size: 20px;
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
             cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.3s ease;
+            transition: all 0.3s ease;
         }
 
-        button:hover {
-            background-color: #5c6bc0;
+        .btn-primary {
+            background: #42a5f5;
+        }
+
+        .btn-primary:hover {
+            background: #5c6bc0;
             transform: scale(1.05);
         }
 
-        button:active {
-            background-color: #42a5f5;
-            transform: scale(1);
+        .footer {
+            margin-top: 25px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .footer span {
+            font-weight: bold;
+            color: #2c3e50;
         }
 
         @keyframes fadeIn {
-            0% {
+            from {
                 opacity: 0;
                 transform: translateY(-20px);
             }
-            100% {
+            to {
                 opacity: 1;
                 transform: translateY(0);
             }
@@ -73,18 +89,24 @@
     </style>
 </head>
 <body>
+
 <div class="container">
-    <h2>Ventana Principal</h2>
-    <button id="changeSceneButton">Registrar Rol</button>
+    <h1>LaTina</h1>
+    <div class="button-container">
+        <button class="btn-primary" id="registerRoleButton">Registrar Rol</button>
+    </div>
+    <div class="footer">
+        Aplicación desarrollada por <span>CodeChef</span>
+    </div>
 </div>
 
 <script>
-    // Llamar al método de Java para cambiar de escena
-    document.getElementById("changeSceneButton").onclick = function() {
-      if (window.java && window.java.changeSceneToForm) {
-          window.java.changeSceneToForm(); // Llamada a Java para cambiar de escena
-      }
+    document.getElementById("registerRoleButton").onclick = function() {
+        if (window.java && window.java.changeSceneToForm) {
+            window.java.changeSceneToForm();
+        }
     };
 </script>
+
 </body>
 </html>
