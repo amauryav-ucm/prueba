@@ -129,11 +129,11 @@ public class VistaPrincipal extends Application {
             e.printStackTrace();
         }
     }
-
+    // Este comentario es una prueba de commit para IC
     public void changeSceneToForm() {
         webView.getEngine().load(new File("src/main/resources/latina/registrarRol.html").toURI().toString());
     }
-
+    
     public void changeSceneToMain() {
         webView.getEngine().load(new File("src/main/resources/latina/VentanaPrincipal.html").toURI().toString());
     }
