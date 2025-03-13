@@ -62,53 +62,27 @@ input:focus {
     gap: 10px;
 }
 
-/* Resaltar el botón de "Registrar" */
-button[type="submit"] {
-    background-color: #42a5f5; /* Color de fondo para el botón de registrar */
-    color: white;
-    font-size: 18px;
-    padding: 7px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
-    box-shadow: 0 4px 8px rgba(66, 165, 245, 0.3); /* Sombra más sutil */
-}
-
-button[type="submit"]:hover {
-    background-color: #5c6bc0;
-    transform: scale(1.05);
-    box-shadow: 0 6px 12px rgba(66, 165, 245, 0.5); /* Sombra más prominente al pasar el mouse */
-}
-
-button[type="submit"]:active {
+button {
+    width: 48%;
+    padding: 12px;
     background-color: #42a5f5;
-    transform: scale(1);
-    box-shadow: 0 2px 4px rgba(66, 165, 245, 0.3); /* Sombra más suave al hacer clic */
-}
-
-/* Estilo del botón de "Volver" */
-button[type="button"] {
-    background-color: #5c6bc0; /* Color de fondo para el botón de volver */
     color: white;
     font-size: 18px;
-    padding: 7px 20px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
-button[type="button"]:hover {
-    background-color: #3a62a8;
+button:hover {
+    background-color: #5c6bc0;
     transform: scale(1.05);
 }
 
-button[type="button"]:active {
-    background-color: #5c6bc0;
+button:active {
+    background-color: #42a5f5;
     transform: scale(1);
 }
-
 
 
 
