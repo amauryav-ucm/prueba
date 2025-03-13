@@ -2,6 +2,7 @@ package latina;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.layout.StackPane;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
@@ -56,18 +57,49 @@ public class VistaPrincipal extends Application {
 
             // Registrar el rol (puedes modificar esta parte según tu lógica de negocio)
             SARol sa = new SARolImp();
-            sa.altaRol(t);
-
-            // Mostrar información del rol registrado
-            System.out.println(t.toString());
-
-            // Cambiar a la primera escena después de registrar el rol
+            int id = sa.altaRol(t);
+            // Variables para cambiar la escena después
             StackPane root1 = new StackPane();
             WebView webView1 = new WebView();
             WebEngine webEngine1 = webView1.getEngine();
+            File htmlFile1 = new File("src/main/resources/latina/test.html");
+
+            if (id > 0)
+            {
+                // Mostrar información del rol registrado
+                System.out.println(t);
+                htmlFile1 = new File("src/main/resources/latina/VentanaPrincipal.html");
+            }
+            else
+            {
+                String mensajeError = "Error desconocido";
+                if(id == -1)
+                {
+                    /////////OP1 : AQUI PONER VISTA DE ERROR DE NOMBRE DE ROL REPETIDO
+                    //htmlFile1 = new File("src/main/resources/latina/ErrorNombre.html");
+                    ////////OP2 : POSIBLE VENTANA EMERGENTE:
+                    mensajeError = "El nombre introducido ya existe. Por favor intente otro distinto.";
+                    System.out.println("Nombre introducido repetido");
+
+                }
+                else if(id == -2)
+                {
+                    //OP1 : AQUI PONER VISTA DE ERROR DE SALARIO MENOS O IGUAL QUE 0
+                    //htmlFile1 = new File("src/main/resources/latina/ErrorSalario.html");
+                    ////////OP2 POSIBLE VENTANA EMERGENTE:
+                    mensajeError = "El salario debe ser mayor que 0.";
+                    System.out.println("Salario introducido negativo");
+
+                }
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("Datos no validos");
+                alert.setContentText("Detalles del error: " + mensajeError);
+                // Mostrar la alerta
+                alert.showAndWait();
+            }
 
             // Cargar el archivo HTML para la ventana principal (con el botón)
-            File htmlFile1 = new File("src/main/resources/latina/VentanaPrincipal.html");
             webEngine1.load(htmlFile1.toURI().toString());
 
             webEngine1.setJavaScriptEnabled(true);
@@ -140,10 +172,7 @@ public class VistaPrincipal extends Application {
 
         // Cambiar a la primera escena
         primaryStage.setScene(scene3);
-
     }
-
-
 
 
     public static void main(String[] args) {

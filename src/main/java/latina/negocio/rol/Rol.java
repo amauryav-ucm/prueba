@@ -6,11 +6,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
-import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
+import jakarta.persistence.Column;
 
 @Entity
-@Table(uniqueConstraints = { @UniqueConstraint(columnNames = "nombre") })
 @NamedQueries({
         @NamedQuery(name = "Rol.findBynombre", query = "select obj from Rol obj where :nombre = obj.nombre ") })
 public class Rol {
@@ -26,6 +24,7 @@ public class Rol {
         this.id = id;
     }
 
+    @Column(unique = true, nullable = false)
     private String nombre;
 
     public String getNombre() {
