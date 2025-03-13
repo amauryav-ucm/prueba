@@ -8,6 +8,8 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
@@ -30,7 +32,7 @@ public class VistaPrincipal extends Application {
         // Quitar la barra de título del sistema
         primaryStage.initStyle(StageStyle.UNDECORATED);
 
-        // Crear la barra personalizada con una imagen y botones
+        // Crear la barra personalizada con una imagen, texto y botones
         HBox titleBar = new HBox();
         titleBar.setStyle("-fx-background-color: #2a5298; -fx-padding: 8px; -fx-alignment: center-left;");
         titleBar.setSpacing(10);
@@ -39,6 +41,11 @@ public class VistaPrincipal extends Application {
         ImageView imageView = new ImageView(new Image("file:src/main/resources/latina/mi_imagen.png"));
         imageView.setFitHeight(30);
         imageView.setPreserveRatio(true);
+
+        // Texto "LaTina"
+        Text titleText = new Text("LaTina");
+        titleText.setFont(Font.font("Arial", 20));
+        titleText.setStyle("-fx-fill: white; -fx-font-weight: bold;");
 
         // Botón de minimizar
         Button minimizeButton = new Button("-");
@@ -56,7 +63,7 @@ public class VistaPrincipal extends Application {
         HBox buttonContainer = new HBox(minimizeButton, closeButton);
         buttonContainer.setSpacing(10);
 
-        titleBar.getChildren().addAll(imageView, spacer, buttonContainer);
+        titleBar.getChildren().addAll(imageView, titleText, spacer, buttonContainer);
 
         // Permitir mover la ventana al arrastrar la barra
         titleBar.setOnMousePressed(event -> {
@@ -95,7 +102,6 @@ public class VistaPrincipal extends Application {
 
     public void sendFormData(JSObject datos) {
         try {
-            // Crear un nuevo objeto TRol con los datos del formulario
             TRol t = new TRol(datos.getMember("nombre").toString(),
                     Double.parseDouble(datos.getMember("salario").toString()));
 
