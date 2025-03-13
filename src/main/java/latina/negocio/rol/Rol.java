@@ -28,6 +28,14 @@ public class Rol {
 
     private String nombre;
 
+    private boolean activo;
+
+    public boolean isActivo(){return this.activo;}
+
+    public void setActivo(boolean activo){
+        this.activo = activo;
+    }
+
     public String getNombre() {
         return nombre;
     }
@@ -52,5 +60,6 @@ public class Rol {
     public Rol(TRol rol) {
         this.nombre = rol.getNombre();
         this.salario = rol.getSalario();
+        this.activo = rol.isActivo();
     }
 }

@@ -103,7 +103,7 @@ public class VistaPrincipal extends Application {
     public void sendFormData(JSObject datos) {
         try {
             TRol t = new TRol(datos.getMember("nombre").toString(),
-                    Double.parseDouble(datos.getMember("salario").toString()));
+                    Double.parseDouble(datos.getMember("salario").toString()), true);
 
             SARol sa = new SARolImp();
             int result = sa.altaRol(t);
@@ -112,7 +112,6 @@ public class VistaPrincipal extends Application {
             if (result >= 0) mensaje = "Se ha registrado el rol correctamente con ID: " + result;
             else if (result == -1) mensaje = "Ya existe un rol con el nombre introducido";
             else if (result == -2) mensaje = "El salario debe ser un número positivo";
-            else if (result == -3) mensaje = "El rol debe estar en mayusculas y sin numeros";
             else mensaje = "";
 
             WebEngine webEngine = webView.getEngine();
