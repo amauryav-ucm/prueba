@@ -45,7 +45,7 @@ public class VistaPrincipal extends Application {
         // WebView para mostrar la ventana HTML
         webView = new WebView();
         WebEngine webEngine = webView.getEngine();
-        File htmlFile = new File("src/main/resources/latina/VentanaPrincipal.html");
+        File htmlFile = new File("src/main/resources/latina/html/VentanaPrincipal.html");
         webEngine.load(htmlFile.toURI().toString());
 
         // Para asegurar que el webView se estire con la ventana
@@ -207,11 +207,11 @@ public class VistaPrincipal extends Application {
     }
 
     public void changeSceneToForm() {
-        webView.getEngine().load(new File("src/main/resources/latina/registrarRol.html").toURI().toString());
+        webView.getEngine().load(new File("src/main/resources/latina/html/registrarRol.html").toURI().toString());
     }
 
     public void changeSceneToMain() {
-        webView.getEngine().load(new File("src/main/resources/latina/VentanaPrincipal.html").toURI().toString());
+        webView.getEngine().load(new File("src/main/resources/latina/html/VentanaPrincipal.html").toURI().toString());
     }
 
     private void showError(String message) {
