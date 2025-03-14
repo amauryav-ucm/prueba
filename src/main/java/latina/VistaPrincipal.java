@@ -1,10 +1,15 @@
 package latina;
 
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -17,116 +22,169 @@ import javafx.stage.StageStyle;
 import latina.vista.controlador.Controlador;
 import latina.vista.Eventos;
 import netscape.javascript.JSObject;
-
 import java.io.File;
 
 public class VistaPrincipal extends Application {
     private WebView webView;
     private double xOffset = 0;
     private double yOffset = 0;
-    private final Color PRIMARY_COLOR = Color.web("#2a5298");
-    private final Color HOVER_COLOR = Color.web("#3a62a8");
     private final Color TEXT_COLOR = Color.WHITE;
+    private final String DARK_RED = "#990000"; // Rojo oscuro para hover
+    private final String TITLE_BAR_COLOR = "#1e3c72"; // Color más elegante para la barra
+    private final String BORDER_COLOR = "#1e3c72"; // Color de borde a juego
 
     @Override
     public void start(Stage primaryStage) {
-        // Quitar la barra de título del sistema
         primaryStage.initStyle(StageStyle.UNDECORATED);
         primaryStage.setTitle("LaTina - Gestión del Restaurante");
 
-        // Crear la barra personalizada
         HBox titleBar = createTitleBar(primaryStage);
-
-        // WebView para mostrar la ventana HTML
         webView = new WebView();
         WebEngine webEngine = webView.getEngine();
         File htmlFile = new File("src/main/resources/latina/html/VentanaPrincipal.html");
         webEngine.load(htmlFile.toURI().toString());
-
-        // Para asegurar que el webView se estire con la ventana
-        VBox.setVgrow(webView, Priority.ALWAYS);
-        HBox.setHgrow(webView, Priority.ALWAYS);
-
-        // Conectar Java con JavaScript en el WebView
         configureJavaScriptBridge(webEngine);
 
-        // Contenedor principal con la barra superior y el WebView
-        VBox root = new VBox(titleBar, webView);
-        root.setStyle("-fx-border-color: #2a5298; -fx-border-width: 2px;");
+        // Hacer que el WebView sea responsivo
+        VBox.setVgrow(webView, Priority.ALWAYS);
 
-        // Asegurar que root ocupe todo el espacio disponible
-        root.prefWidthProperty().bind(primaryStage.widthProperty());
-        root.prefHeightProperty().bind(primaryStage.heightProperty());
+        // Establecer el ancho preferido para el WebView
+        webView.setPrefWidth(Region.USE_COMPUTED_SIZE);
+        webView.setPrefHeight(Region.USE_COMPUTED_SIZE);
+
+        VBox root = new VBox(titleBar, webView);
+        root.setStyle("-fx-border-color: " + BORDER_COLOR + "; -fx-border-width: 2px;");
+
+        // Asegurar que el VBox root use todo el espacio disponible
+        root.setPrefWidth(Region.USE_COMPUTED_SIZE);
+        root.setPrefHeight(Region.USE_COMPUTED_SIZE);
 
         Scene scene = new Scene(root, 900, 600);
-        primaryStage.setScene(scene);
-        primaryStage.show();
 
-        // Listener para redimensionar componentes cuando cambia el tamaño de la ventana
+        // Agregar listener para manejar los cambios de tamaño
         primaryStage.widthProperty().addListener((obs, oldVal, newVal) -> {
-            // Podríamos añadir aquí más ajustes específicos si son necesarios
+            root.setPrefWidth(newVal.doubleValue());
+            webView.setPrefWidth(newVal.doubleValue());
         });
 
         primaryStage.heightProperty().addListener((obs, oldVal, newVal) -> {
-            // Podríamos añadir aquí más ajustes específicos si son necesarios
+            root.setPrefHeight(newVal.doubleValue());
+            // Restar altura de la barra de título
+            double titleBarHeight = titleBar.getHeight();
+            webView.setPrefHeight(newVal.doubleValue() - titleBarHeight);
         });
+
+        // Agregar listener para cuando la ventana cambia de estado de maximizado
+        primaryStage.maximizedProperty().addListener((obs, oldVal, newVal) -> {
+            if (newVal) {
+                // Cuando se maximiza
+                root.setStyle("-fx-border-color: " + BORDER_COLOR + "; -fx-border-width: 0px;");
+            } else {
+                // Cuando vuelve a su tamaño normal
+                root.setStyle("-fx-border-color: " + BORDER_COLOR + "; -fx-border-width: 2px;");
+            }
+        });
+
+        primaryStage.setScene(scene);
+        primaryStage.show();
     }
 
     private HBox createTitleBar(Stage primaryStage) {
         HBox titleBar = new HBox();
-        titleBar.setPadding(new Insets(8));
-        titleBar.setSpacing(10);
+        titleBar.setPadding(new Insets(10, 15, 10, 15));
+        titleBar.setSpacing(5);
         titleBar.setAlignment(Pos.CENTER_LEFT);
-        titleBar.setStyle("-fx-background-color: #2a5298;");
-
-        // Esta línea asegura que la barra se extienda por todo el ancho
+        titleBar.setStyle("-fx-background-color: " + TITLE_BAR_COLOR + ";");
         HBox.setHgrow(titleBar, Priority.ALWAYS);
 
-        // Texto "LaTina"
         Text titleText = new Text("Gestionando LaTina");
-        titleText.setFont(Font.font("Helvetica", FontWeight.BOLD, 20));
+        titleText.setFont(Font.font("Segoe UI", FontWeight.BOLD, 20));
         titleText.setFill(TEXT_COLOR);
 
-        // Separador para empujar los botones de control a la derecha
         Region spacer = new Region();
         HBox.setHgrow(spacer, Priority.ALWAYS);
 
-        // Botones de control de ventana
-        Button minimizeButton = createWindowControlButton("-", e -> primaryStage.setIconified(true));
-        Button maximizeButton = createWindowControlButton("□", e -> {
-            primaryStage.setMaximized(!primaryStage.isMaximized());
-        });
-        Button closeButton = createWindowControlButton("X", e -> System.exit(0));
+        // Crear un HBox para los botones de control
+        HBox controlBox = new HBox(2);
+        controlBox.setAlignment(Pos.CENTER_RIGHT);
 
-        // Configurar eventos para mover la ventana
+        try {
+            ImageView minimizeIcon = new ImageView(new Image(getClass().getResourceAsStream("/latina/images/minimize.png")));
+            ImageView maximizeIcon = new ImageView(new Image(getClass().getResourceAsStream("/latina/images/cuadrado.png")));
+            ImageView closeIcon = new ImageView(new Image(getClass().getResourceAsStream("/latina/images/X.png")));
+
+            configureIcon(minimizeIcon);
+            configureIcon(maximizeIcon);
+            configureIcon(closeIcon);
+
+            Button minimizeButton = createWindowControlButton(minimizeIcon, event -> primaryStage.setIconified(true));
+            Button maximizeButton = createWindowControlButton(maximizeIcon, event -> {
+                primaryStage.setMaximized(!primaryStage.isMaximized());
+                // Actualizar el estado de la interfaz
+                resizeUI(primaryStage);
+            });
+            Button closeButton = createWindowControlButton(closeIcon, event -> System.exit(0));
+
+            controlBox.getChildren().addAll(minimizeButton, maximizeButton, closeButton);
+        } catch (Exception ex) {
+            System.err.println("Error cargando iconos: " + ex.getMessage());
+            // Botones de respaldo sin iconos
+            Button minimizeButton = new Button("_");
+            Button maximizeButton = new Button("□");
+            Button closeButton = new Button("X");
+
+            minimizeButton.setOnAction(event -> primaryStage.setIconified(true));
+            maximizeButton.setOnAction(event -> {
+                primaryStage.setMaximized(!primaryStage.isMaximized());
+                resizeUI(primaryStage);
+            });
+            closeButton.setOnAction(event -> System.exit(0));
+
+            addDarkRedHoverEffect(minimizeButton);
+            addDarkRedHoverEffect(maximizeButton);
+            addDarkRedHoverEffect(closeButton);
+
+            controlBox.getChildren().addAll(minimizeButton, maximizeButton, closeButton);
+        }
+
         setupWindowDragListeners(titleBar, primaryStage);
 
-        // Agregar elementos a la barra (sin los botones de navegación)
-        titleBar.getChildren().addAll(
-                titleText,
-                spacer,
-                minimizeButton, maximizeButton, closeButton
-        );
-
+        titleBar.getChildren().addAll(titleText, spacer, controlBox);
         return titleBar;
     }
 
-    private Button createWindowControlButton(String text, javafx.event.EventHandler<javafx.event.ActionEvent> action) {
-        Button button = new Button(text);
-        button.setFont(Font.font("Helvetica", FontWeight.NORMAL, 12));
-        button.setTextFill(TEXT_COLOR);
-        button.setStyle("-fx-background-color: transparent; -fx-min-width: 24px; -fx-min-height: 24px; -fx-cursor: hand;");
-        button.setOnAction(action);
-
-        // Efectos especiales para botones de control
-        if (text.equals("X")) {
-            button.setOnMouseEntered(e -> button.setStyle("-fx-background-color: #e81123; -fx-min-width: 24px; -fx-min-height: 24px; -fx-cursor: hand;"));
-        } else {
-            button.setOnMouseEntered(e -> button.setStyle("-fx-background-color: " + HOVER_COLOR.toString().replace("0x", "#") + "; -fx-min-width: 24px; -fx-min-height: 24px; -fx-cursor: hand;"));
+    private void resizeUI(Stage stage) {
+        // Notificar a JavaScript que la ventana ha cambiado de tamaño
+        if (webView != null && webView.getEngine() != null) {
+            try {
+                webView.getEngine().executeScript(
+                        "if (typeof window.onResize === 'function') { window.onResize(" +
+                                stage.getWidth() + ", " + stage.getHeight() + ", " +
+                                stage.isMaximized() + "); }"
+                );
+            } catch (Exception ex) {
+                // Si falla el script, no afecta la funcionalidad principal
+            }
         }
-        button.setOnMouseExited(e -> button.setStyle("-fx-background-color: transparent; -fx-min-width: 24px; -fx-min-height: 24px; -fx-cursor: hand;"));
+    }
 
+    private Button createWindowControlButton(Node graphic, EventHandler<ActionEvent> event) {
+        Button button = new Button();
+        button.setGraphic(graphic);
+        button.setStyle("-fx-background-color: transparent; -fx-padding: 5px;");
+        button.setOnAction(event);
+        addDarkRedHoverEffect(button);
         return button;
+    }
+
+    private void configureIcon(ImageView icon) {
+        icon.setFitWidth(14);
+        icon.setFitHeight(14);
+    }
+
+    private void addDarkRedHoverEffect(Button button) {
+        button.setOnMouseEntered(event -> button.setStyle("-fx-background-color: " + DARK_RED + "; -fx-padding: 5px;"));
+        button.setOnMouseExited(event -> button.setStyle("-fx-background-color: transparent; -fx-padding: 5px;"));
     }
 
     private void setupWindowDragListeners(HBox titleBar, Stage primaryStage) {
@@ -134,27 +192,19 @@ public class VistaPrincipal extends Application {
             xOffset = event.getSceneX();
             yOffset = event.getSceneY();
         });
-
         titleBar.setOnMouseDragged(event -> {
-            // Solo mover si no está maximizada
             if (!primaryStage.isMaximized()) {
                 primaryStage.setX(event.getScreenX() - xOffset);
                 primaryStage.setY(event.getScreenY() - yOffset);
             }
         });
-
-        // Doble clic para maximizar/restaurar
         titleBar.setOnMouseClicked(event -> {
             if (event.getClickCount() == 2) {
-                if (primaryStage.isMaximized()) {
-                    primaryStage.setMaximized(false);
-                } else {
-                    primaryStage.setMaximized(true);
-                }
+                primaryStage.setMaximized(!primaryStage.isMaximized());
+                resizeUI(primaryStage);
             }
         });
     }
-
 
     private void configureJavaScriptBridge(WebEngine webEngine) {
         webEngine.setJavaScriptEnabled(true);
@@ -162,23 +212,24 @@ public class VistaPrincipal extends Application {
             if (newValue == javafx.concurrent.Worker.State.SUCCEEDED) {
                 JSObject window = (JSObject) webEngine.executeScript("window");
                 window.setMember("java", this);
+
+                // Inicializar tamaño para JavaScript
+                Stage stage = (Stage) webView.getScene().getWindow();
+                resizeUI(stage);
             }
         });
     }
 
-    public void accion(String eventoStr, Object datos)
-    {
+    public void accion(String eventoStr, Object datos) {
         Eventos evento = Eventos.valueOf(eventoStr);
         Controlador.getInstance(this).accion(evento, datos);
     }
 
-    public WebView getWebView()
-    {
+    public WebView getWebView() {
         return webView;
     }
 
-    public void changeScene(String nuevaEscena)
-    {
+    public void changeScene(String nuevaEscena) {
         webView.getEngine().load(new File(nuevaEscena).toURI().toString());
     }
 
