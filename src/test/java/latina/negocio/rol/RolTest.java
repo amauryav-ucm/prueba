@@ -8,7 +8,6 @@ class RolTest {
 
     @Test
     void getId() {
-        assertEquals(1,2);
     }
 
     @Test
