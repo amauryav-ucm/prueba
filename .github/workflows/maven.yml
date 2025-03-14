@@ -12,7 +12,7 @@ on:
   push:
     branches: 
       - master
-      - 'DEV-*'
+      - DEV-*
   pull_request:
     branches: [ "master" ]
 
