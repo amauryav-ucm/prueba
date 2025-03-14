@@ -14,21 +14,27 @@ public class SARolImp implements SARol {
 
     @Override
     public int altaRol(TRol rol) {
-        EntityManager em = crearEntityManager();
-        EntityTransaction trans = em.getTransaction();
-        trans.begin();
-        Query buscarPorNombre = em.createNamedQuery("Rol.findBynombre");
-        buscarPorNombre.setParameter("nombre", rol.getNombre());
-        @SuppressWarnings("unchecked")
-        List<Object> l = buscarPorNombre.getResultList();
-        if(!l.isEmpty()) return -1;
-        if(rol.getSalario()<=0) return -2;
-        if (!rol.getNombre().matches("[A-Z ]+")) return -3; //Solo permite todo en mayuscula y sin numeros
-        Rol mirol = new Rol(rol);
-        em.persist(mirol);
-        trans.commit();
-        em.close();
-        return mirol.getId();
+        EntityTransaction trans = null;
+        try {
+            EntityManager em = crearEntityManager();
+            trans = em.getTransaction();
+            trans.begin();
+            Query buscarPorNombre = em.createNamedQuery("Rol.findBynombre");
+            buscarPorNombre.setParameter("nombre", rol.getNombre());
+            @SuppressWarnings("unchecked")
+            List<Object> l = buscarPorNombre.getResultList();
+            if (!l.isEmpty()) return -1;
+            if (rol.getSalario() <= 0) return -2;
+            if (!rol.getNombre().matches("[A-Z ]+")) return -3; //Solo permite todo en mayuscula y sin numeros
+            Rol mirol = new Rol(rol);
+            em.persist(mirol);
+            trans.commit();
+            em.close();
+            return mirol.getId();
+        } catch (Exception e){
+            if(trans != null) trans.rollback();
+            return -4;
+        }
     }
 
     protected EntityManager crearEntityManager(){
