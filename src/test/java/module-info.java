@@ -1,4 +1,3 @@
-module latina {
+open module latina {
     // Para CI
-    opens latina.negocio.rol;
 }
