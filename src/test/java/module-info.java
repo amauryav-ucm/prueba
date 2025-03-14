@@ -1,3 +1,3 @@
 open module latina {
-    // Para CI
+    requires org.junit.jupiter.api;
 }
