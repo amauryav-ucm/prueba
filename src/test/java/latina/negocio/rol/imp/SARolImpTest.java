@@ -29,7 +29,7 @@ class SARolImpTest {
         // Creamos un rol falso que estaria en teoria dentro de la base de datos
         Rol stubRol = new Rol();
         stubRol.setActivo(true);
-        stubRol.setNombre("mirol");
+        stubRol.setNombre("MIROL");
         stubRol.setSalario(10);
 
         // Lo metemos en una lista porque es lo que devuelve la query
@@ -56,7 +56,7 @@ class SARolImpTest {
         doReturn(stubEntityManager).when(sa).crearEntityManager();
 
         // Creamos el transfer con el mismo nombre para que de error
-        TRol trol = new TRol("mirol", 0, true);
+        TRol trol = new TRol("MIROL", 10, true);
 
         // Llamamos a la funcion
         int resultado = sa.altaRol(trol);
