@@ -1,3 +1,5 @@
 # Para que no se suban las carpetas de compilacion
 target/
 out/
+.idea/material_theme_project_new.xml
+.idea/material_theme_project_new.xml
