@@ -21,24 +21,22 @@
             <artifactId>javafx-fxml</artifactId>
             <version>21</version>
         </dependency>
-        <!--dependency>
-            <groupId>org.eclipse.persistence</groupId>
-            <artifactId>eclipselink</artifactId>
-            <version>5.0.0-B07</version>
-            <scope>compile</scope>
-        </dependency-->
+        <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
-            <version>5.8.2</version> <!-- Usa la versión estable más reciente -->
+            <version>5.12.0</version>
             <scope>test</scope>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
-            <version>5.8.2</version> <!-- Usa la misma versión -->
+            <version>5.12.0</version>
             <scope>test</scope>
         </dependency>
+
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-web</artifactId>
@@ -71,14 +69,14 @@
                     <release>11</release>
                 </configuration>
             </plugin>
-            <plugin>
+            <!--plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.0.0-M5</version> <!-- Asegúrate de usar la última versión -->
+                <version>3.0.0-M5</version>
                 <configuration>
                     <useJUnitPlatform>true</useJUnitPlatform>
                 </configuration>
-            </plugin>
+            </plugin-->
             <plugin>
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-maven-plugin</artifactId>
