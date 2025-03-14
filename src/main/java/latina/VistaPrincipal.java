@@ -37,6 +37,7 @@ public class VistaPrincipal extends Application {
     public void start(Stage primaryStage) {
         primaryStage.initStyle(StageStyle.UNDECORATED);
         primaryStage.setTitle("LaTina - Gestión del Restaurante");
+        primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/latina/images/logo LaTina.png")));
 
         HBox titleBar = createTitleBar(primaryStage);
         webView = new WebView();
