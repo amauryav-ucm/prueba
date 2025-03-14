@@ -1,13 +1,10 @@
 package latina;
 
 import javafx.application.Application;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Tooltip;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -17,11 +14,9 @@ import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import latina.negocio.rol.SARol;
-import latina.negocio.rol.TRol;
-import latina.negocio.rol.imp.SARolImp;
+import latina.vista.controlador.Controlador;
+import latina.vista.Eventos;
 import netscape.javascript.JSObject;
-import org.w3c.dom.Document;
 
 import java.io.File;
 
@@ -99,11 +94,7 @@ public class VistaPrincipal extends Application {
         // Botones de control de ventana
         Button minimizeButton = createWindowControlButton("-", e -> primaryStage.setIconified(true));
         Button maximizeButton = createWindowControlButton("□", e -> {
-            if (primaryStage.isMaximized()) {
-                primaryStage.setMaximized(false);
-            } else {
-                primaryStage.setMaximized(true);
-            }
+            primaryStage.setMaximized(!primaryStage.isMaximized());
         });
         Button closeButton = createWindowControlButton("X", e -> System.exit(0));
 
@@ -164,6 +155,7 @@ public class VistaPrincipal extends Application {
         });
     }
 
+
     private void configureJavaScriptBridge(WebEngine webEngine) {
         webEngine.setJavaScriptEnabled(true);
         webEngine.getLoadWorker().stateProperty().addListener((observable, oldValue, newValue) -> {
@@ -174,49 +166,20 @@ public class VistaPrincipal extends Application {
         });
     }
 
-    public void sendFormData(JSObject datos) {
-        try {
-            TRol t = new TRol(datos.getMember("nombre").toString(),
-                    Double.parseDouble(datos.getMember("salario").toString()));
-
-            SARol sa = new SARolImp();
-            int result = sa.altaRol(t);
-
-            String mensaje;
-            if (result >= 0) mensaje = "Se ha registrado el rol correctamente con ID: " + result;
-            else if (result == -1) mensaje = "Ya existe un rol con el nombre introducido";
-            else if (result == -2) mensaje = "El salario debe ser un número positivo";
-            else if (result == -3) mensaje = "El nombre no puede tener mayúsculas, números o caracteres especiales";
-            else mensaje = "";
-
-            WebEngine webEngine = webView.getEngine();
-            String finalMensaje = mensaje;
-            webEngine.documentProperty().addListener(new ChangeListener<Document>() {
-                @Override
-                public void changed(ObservableValue<? extends Document> obs, Document oldDoc, Document newDoc) {
-                    if (newDoc != null) {
-                        webEngine.executeScript(String.format("mostrarMensaje('%s')", finalMensaje));
-                        webEngine.documentProperty().removeListener(this);
-                    }
-                }
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-            showError("Error al procesar los datos: " + e.getMessage());
-        }
+    public void accion(String eventoStr, Object datos)
+    {
+        Eventos evento = Eventos.valueOf(eventoStr);
+        Controlador.getInstance(this).accion(evento, datos);
     }
 
-    public void changeSceneToForm() {
-        webView.getEngine().load(new File("src/main/resources/latina/html/registrarRol.html").toURI().toString());
+    public WebView getWebView()
+    {
+        return webView;
     }
 
-    public void changeSceneToMain() {
-        webView.getEngine().load(new File("src/main/resources/latina/html/VentanaPrincipal.html").toURI().toString());
-    }
-
-    private void showError(String message) {
-        WebEngine webEngine = webView.getEngine();
-        webEngine.executeScript(String.format("alert('%s')", message.replace("'", "\\'")));
+    public void changeScene(String nuevaEscena)
+    {
+        webView.getEngine().load(new File(nuevaEscena).toURI().toString());
     }
 
     public static void main(String[] args) {
