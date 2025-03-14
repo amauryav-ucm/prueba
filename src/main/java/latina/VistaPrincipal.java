@@ -177,7 +177,7 @@ public class VistaPrincipal extends Application {
     public void sendFormData(JSObject datos) {
         try {
             TRol t = new TRol(datos.getMember("nombre").toString(),
-                    Double.parseDouble(datos.getMember("salario").toString()));
+                    Double.parseDouble(datos.getMember("salario").toString()), true);
 
             SARol sa = new SARolImp();
             int result = sa.altaRol(t);
