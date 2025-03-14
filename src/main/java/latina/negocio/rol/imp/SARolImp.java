@@ -2,8 +2,6 @@ package latina.negocio.rol.imp;
 
 import java.util.List;
 
-import jakarta.persistence.EntityTransaction;
-import jakarta.persistence.Query;
 import latina.integracion.emfc.EMFContainer;
 import jakarta.persistence.EntityManager;
 import latina.negocio.rol.Rol;
@@ -14,31 +12,44 @@ public class SARolImp implements SARol {
 
     @Override
     public int altaRol(TRol rol) {
-        EntityTransaction trans = null;
+        EntityManager em = null;
+        int id = 0;
         try {
-            EntityManager em = crearEntityManager();
-            trans = em.getTransaction();
-            trans.begin();
-            Query buscarPorNombre = em.createNamedQuery("Rol.findBynombre");
-            buscarPorNombre.setParameter("nombre", rol.getNombre());
+            em = EMFContainer.getInstance().getEMF().createEntityManager();
+            em.getTransaction().begin();
             @SuppressWarnings("unchecked")
-            List<Object> l = buscarPorNombre.getResultList();
-            if (!l.isEmpty()) return -1;
-            if (rol.getSalario() <= 0) return -2;
-            if (!rol.getNombre().matches("[A-Z ]+")) return -3; //Solo permite todo en mayuscula y sin numeros
-            Rol mirol = new Rol(rol);
-            em.persist(mirol);
-            trans.commit();
-            em.close();
-            return mirol.getId();
-        } catch (Exception e){
-            if(trans != null) trans.rollback();
-            return -4;
+            List<Object> l = em.createNamedQuery("Rol.findBynombre").setParameter("nombre", rol.getNombre()).getResultList();
+            if(!l.isEmpty())
+            {
+                em.getTransaction().rollback();
+                return -1;
+            }
+            else if(rol.getSalario() <= 0)
+            {
+                em.getTransaction().rollback();
+                return -2;
+            }
+            else if (!rol.getNombre().matches("[A-Z ]+"))//Solo permite todo en mayuscula y sin numeros
+            {
+                em.getTransaction().rollback();
+                return -3;
+            }
+            else
+            {
+                Rol mirol = new Rol(rol);
+                em.persist(mirol);
+                em.getTransaction().commit();
+                id = mirol.getId();
+            }
+        }catch (Exception e) {
+            if (em != null && em.getTransaction().isActive())
+                em.getTransaction().rollback();
+        } finally {
+            if (em != null)
+                em.close();
         }
-    }
 
-    protected EntityManager crearEntityManager(){
-        return EMFContainer.getInstance().getEMF().createEntityManager();
+        return id;
     }
 
 }

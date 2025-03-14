@@ -1,16 +1,8 @@
 package latina.negocio.rol;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.NamedQueries;
-import jakarta.persistence.NamedQuery;
-import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
+import jakarta.persistence.*;
 
 @Entity
-@Table(uniqueConstraints = { @UniqueConstraint(columnNames = "nombre") })
 @NamedQueries({
         @NamedQuery(name = "Rol.findBynombre", query = "select obj from Rol obj where :nombre = obj.nombre ") })
 public class Rol {
@@ -26,15 +18,11 @@ public class Rol {
         this.id = id;
     }
 
+    @Column(unique = true, nullable = false)
     private String nombre;
 
     private boolean activo;
 
-    public boolean isActivo(){return this.activo;}
-
-    public void setActivo(boolean activo){
-        this.activo = activo;
-    }
 
     public String getNombre() {
         return nombre;
@@ -54,6 +42,12 @@ public class Rol {
         this.salario = salario;
     }
 
+    public boolean isActivo(){return this.activo;}
+
+    public void setActivo(boolean activo){
+        this.activo = activo;
+    }
+
     public Rol() {
     }
 
@@ -62,4 +56,6 @@ public class Rol {
         this.salario = rol.getSalario();
         this.activo = rol.isActivo();
     }
+
+
 }
