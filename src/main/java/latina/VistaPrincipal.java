@@ -1,8 +1,6 @@
 package latina;
 
 import javafx.application.Application;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
@@ -14,11 +12,9 @@ import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import latina.negocio.rol.SARol;
-import latina.negocio.rol.TRol;
-import latina.negocio.rol.imp.SARolImp;
+import latina.vista.controlador.Controlador;
+import latina.vista.Eventos;
 import netscape.javascript.JSObject;
-import org.w3c.dom.Document;
 
 import java.io.File;
 
@@ -100,42 +96,20 @@ public class VistaPrincipal extends Application {
         primaryStage.show();
     }
 
-    public void sendFormData(JSObject datos) {
-        try {
-            TRol t = new TRol(datos.getMember("nombre").toString(),
-                    Double.parseDouble(datos.getMember("salario").toString()), true);
-
-            SARol sa = new SARolImp();
-            int result = sa.altaRol(t);
-
-            String mensaje;
-            if (result >= 0) mensaje = "Se ha registrado el rol correctamente con ID: " + result;
-            else if (result == -1) mensaje = "Ya existe un rol con el nombre introducido";
-            else if (result == -2) mensaje = "El salario debe ser un número positivo";
-            else mensaje = "";
-
-            WebEngine webEngine = webView.getEngine();
-            String finalMensaje = mensaje;
-            webEngine.documentProperty().addListener(new ChangeListener<Document>() {
-                @Override
-                public void changed(ObservableValue<? extends Document> obs, Document oldDoc, Document newDoc) {
-                    if (newDoc != null) {
-                        webEngine.executeScript(String.format("mostrarMensaje('%s')", finalMensaje));
-                        webEngine.documentProperty().removeListener(this);
-                    }
-                }
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void accion(String eventoStr, Object datos)
+    {
+        Eventos evento = Eventos.valueOf(eventoStr);
+        Controlador.getInstance(this).accion(evento, datos);
     }
 
-    public void changeSceneToForm() {
-        webView.getEngine().load(new File("src/main/resources/latina/registrarRol.html").toURI().toString());
+    public WebView getWebView()
+    {
+        return webView;
     }
 
-    public void changeSceneToMain() {
-        webView.getEngine().load(new File("src/main/resources/latina/VentanaPrincipal.html").toURI().toString());
+    public void changeScene(String nuevaEscena)
+    {
+        webView.getEngine().load(new File(nuevaEscena).toURI().toString());
     }
 
     public static void main(String[] args) {
