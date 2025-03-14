@@ -1,33 +1,84 @@
 function recogerDatos() {
-        var rol = {};
-        rol.nombre = document.getElementById("name").value.trim();
-        rol.salario = document.getElementById("wage").value.trim();
-        if (rol.nombre === "") return;
-        if (rol.salario === "" || isNaN(rol.salario)) return;
-        enviarAJava(rol);
+    var rol = {};
+    var nombre = document.getElementById("name");
+    var salario = document.getElementById("wage");
+
+    // Limpiar errores previos y el mensaje del popup
+    nombre.classList.remove("error");
+    salario.classList.remove("error");
+    cerrarMensaje(); // Evitar que el mensaje predeterminado se muestre si hay error
+
+    // Verificar si los campos están vacíos
+    let hayError = false;
+
+    if (nombre.value.trim() === "") {
+        nombre.classList.add("error");  // Agregar clase de error
+        hayError = true;
     }
 
-   function enviarAJava(rol){
-        if (window.java && window.java.accion) {
-                    window.java.accion("REGISTRAR_ROL", rol);
-                }
+    if (salario.value.trim() === "" || isNaN(salario.value.trim())) {
+        salario.classList.add("error");  // Agregar clase de error
+        hayError = true;
     }
 
-    function volverAlaVentanaPrincipal() {
-         if (window.java && window.java.changeScene) {
-                    window.java.changeScene("src/main/resources/latina/html/VentanaPrincipal.html"); // Llamar a la función en Java para cambiar de escena
-                }
+    // Si hay errores, no continuar con el envío
+    if (hayError) {
+        return;
     }
 
-    function mostrarMensaje(mensaje) {
-        const popup = document.getElementById("popup");
-        popup.style.display = "flex";
-        document.getElementById("popup-message").innerText = mensaje;
-        setTimeout(() => popup.classList.add("show"), 10);
-    }
+    // Si todos los campos son correctos, enviar los datos
+    rol.nombre = nombre.value.trim();
+    rol.salario = salario.value.trim();
 
-    function cerrarMensaje() {
-        const popup = document.getElementById("popup");
-        popup.classList.remove("show");
-        setTimeout(() => popup.style.display = "none", 300);
-    }
+    // Enviar los datos al backend Java (RegistrarRol.java)
+    enviarAJava(rol);
+}
+
+function mostrarMensaje(mensaje) {
+    const popup = document.getElementById("popup");
+    popup.style.display = "flex";
+    document.getElementById("popup-message").innerText = mensaje;
+    setTimeout(() => popup.classList.add("show"), 10);
+}
+
+function cerrarMensaje() {
+    const popup = document.getElementById("popup");
+    popup.classList.remove("show");
+    setTimeout(() => popup.style.display = "none", 300);
+}
+
+
+function enviarAJava(rol){
+    if (window.java && window.java.accion) {
+                window.java.accion("REGISTRAR_ROL", rol);
+            }
+}
+
+function volverAlaVentanaPrincipal() {
+     if (window.java && window.java.changeScene) {
+                window.java.changeScene("src/main/resources/latina/html/VentanaPrincipal.html"); // Llamar a la función en Java para cambiar de escena
+            }
+}
+
+function mostrarMensaje(mensaje) {
+    const popup = document.getElementById("popup");
+    popup.style.display = "flex";
+    document.getElementById("popup-message").innerText = mensaje;
+    setTimeout(() => popup.classList.add("show"), 10);
+}
+
+function cerrarMensaje() {
+    const popup = document.getElementById("popup");
+    popup.classList.remove("show");
+    setTimeout(() => popup.style.display = "none", 300);
+}
+
+document.querySelector("form").addEventListener("submit", function(event) {
+        let rol = document.querySelector("input[name='rol']").value;
+        let salario = document.querySelector("input[name='salario']").value;
+
+        if (rol.trim() === "" || salario.trim() === "") {
+            event.preventDefault(); // Evita el envío del formulario
+            alert("Por favor, completa todos los campos");
+        }
+    });

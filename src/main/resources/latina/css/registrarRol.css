@@ -83,8 +83,31 @@ button:active {
     background-color: #42a5f5;
     transform: scale(1);
 }
+/* Estilos para campos con error */
+input.error {
+    border: 2px solid red;
+    background-color: #ffeeee;
+}
 
+/* Contenedor para label y mensaje de error */
+.label-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
 
+/* Estilo para el mensaje de error */
+.error-message {
+    color: red;
+    font-size: 0.8em;
+    margin-left: 10px;
+    display: none;
+}
+
+/* Para mostrar el mensaje de error */
+.error-message.show {
+    display: inline-block;
+}
 
 /* Popup Styling */
 .popup-overlay {
