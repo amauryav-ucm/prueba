@@ -230,7 +230,7 @@ public class VistaPrincipal extends Application {
         return webView;
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) {//Habrá q quitarlo, y q sol haya main en la clase Main
         launch(args);
     }
 }
