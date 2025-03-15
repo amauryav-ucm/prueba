@@ -159,9 +159,9 @@ public class VistaPrincipal extends Application {
         if (webView != null && webView.getEngine() != null) {
             try {
                 webView.getEngine().executeScript(
-                        "if (typeof window.onResize === 'function') { window.onResize(" +
-                                stage.getWidth() + ", " + stage.getHeight() + ", " +
-                                stage.isMaximized() + "); }"
+                "if (typeof window.onResize === 'function') { window.onResize(" +
+                        stage.getWidth() + ", " + stage.getHeight() + ", " +
+                        stage.isMaximized() + "); }"
                 );
             } catch (Exception ex) {
                 // Si falla el script, no afecta la funcionalidad principal
@@ -228,10 +228,6 @@ public class VistaPrincipal extends Application {
 
     public WebView getWebView() {
         return webView;
-    }
-
-    public void changeScene(String nuevaEscena) {
-        webView.getEngine().load(new File(nuevaEscena).toURI().toString());
     }
 
     public static void main(String[] args) {

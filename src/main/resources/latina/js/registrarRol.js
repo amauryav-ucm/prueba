@@ -15,7 +15,6 @@ function recogerDatos() {
         nombre.classList.add("error");  // Agregar clase de error
         hayError = true;
     }
-
     if (salario.value.trim() === "" || isNaN(salario.value.trim())) {
         salario.classList.add("error");  // Agregar clase de error
         hayError = true;
@@ -74,11 +73,11 @@ function cerrarMensaje() {
 }
 
 document.querySelector("form").addEventListener("submit", function(event) {
-        let rol = document.querySelector("input[name='rol']").value;
-        let salario = document.querySelector("input[name='salario']").value;
+let rol = document.querySelector("input[name='rol']").value;
+let salario = document.querySelector("input[name='salario']").value;
 
-        if (rol.trim() === "" || salario.trim() === "") {
-            event.preventDefault(); // Evita el envío del formulario
-            alert("Por favor, completa todos los campos");
-        }
-    });
+if (rol.trim() === "" || salario.trim() === "") {
+    event.preventDefault(); // Evita el envío del formulario
+    alert("Por favor, completa todos los campos");
+}
+});

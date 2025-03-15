@@ -34,32 +34,6 @@ h1 {
     margin-bottom: 20px;
 }
 
-/* Estilos para campos con error */
-        input.error {
-            border: 2px solid red;
-            background-color: #ffeeee;
-        }
-
-/* Contenedor para label y mensaje de error */
-.label-container {
-    display: flex;
-    align-items: center;
-    margin-bottom: 5px;
-}
-
-/* Estilo para el mensaje de error */
-.error-message {
-    color: red;
-    font-size: 0.8em;
-    margin-left: 10px;
-    display: none;
-}
-
-/* Para mostrar el mensaje de error */
-.error-message.show {
-    display: inline-block;
-}
-
 .button-container {
     display: flex;
     flex-direction: column;
