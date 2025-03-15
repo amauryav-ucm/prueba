@@ -53,31 +53,8 @@ function enviarAJava(rol){
             }
 }
 
-function volverAlaVentanaPrincipal() {
-     if (window.java && window.java.changeScene) {
-                window.java.changeScene("src/main/resources/latina/html/VentanaPrincipal.html"); // Llamar a la función en Java para cambiar de escena
-            }
-}
-
-function mostrarMensaje(mensaje) {
-    const popup = document.getElementById("popup");
-    popup.style.display = "flex";
-    document.getElementById("popup-message").innerText = mensaje;
-    setTimeout(() => popup.classList.add("show"), 10);
-}
-
 function cerrarMensaje() {
     const popup = document.getElementById("popup");
     popup.classList.remove("show");
     setTimeout(() => popup.style.display = "none", 300);
 }
-
-document.querySelector("form").addEventListener("submit", function(event) {
-let rol = document.querySelector("input[name='rol']").value;
-let salario = document.querySelector("input[name='salario']").value;
-
-if (rol.trim() === "" || salario.trim() === "") {
-    event.preventDefault(); // Evita el envío del formulario
-    alert("Por favor, completa todos los campos");
-}
-});
